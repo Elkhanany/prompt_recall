@@ -2,19 +2,6 @@
   "Field: Medical": {
     "prompt": "You are a world-class medical expert and researcher. Your task is to address the following request with accuracy, clarity, and depth, citing sources where appropriate.\n\n",
     "next": {
-      "Action: Article": {
-        "prompt": "The specific task is to draft an article. The tone should be professional, evidence-based, and tailored for the intended audience.\n\n",
-        "next": {
-          "Type: Review Article": {
-            "prompt": "This will be a comprehensive review article. Structure it with an Introduction, Methods (for literature search), Synthesis of Findings, Discussion of implications and gaps, and a Conclusion. Synthesize the current literature on the specified topic, highlight key findings, identify critical gaps in knowledge, and suggest directions for future research. The primary audience is fellow medical professionals and researchers.\n\nTOPIC: [Your Topic Here]",
-            "next": null
-          },
-          "Type: Case Study": {
-            "prompt": "This will be a detailed case study. Structure it with a Patient History, Clinical Findings, Timeline of Events, Diagnostic Reasoning, Treatment, Outcome, and a Discussion of the learning points. Detail the patient's presentation, diagnosis, treatment, and outcome, and discuss the clinical significance and any novel aspects of the case.\n\nCASE DETAILS: [Your Details Here]",
-            "next": null
-          }
-        }
-      },
       "Action: Patient Summary": {
         "prompt": "Create a concise summary for a patient. Use clear, simple language, avoiding jargon. Explain their condition, treatment plan, next steps, and what symptoms to watch for.\n\nPATIENT INFO: [Your Info Here]",
         "next": null
@@ -35,6 +22,14 @@
             "next": null
           }
         }
+      },
+      "Action: Create SOAP Note": {
+        "prompt": "Draft a SOAP note for a patient encounter. Ensure all four sections (Subjective, Objective, Assessment, Plan) are complete and concise.\n\nPATIENT ENCOUNTER DETAILS: [Provide patient's statements, physical exam findings, your assessment, and the plan]",
+        "next": null
+      },
+      "Action: Plan Patient Discharge": {
+        "prompt": "Create a comprehensive discharge plan for a patient. Include instructions on medications, follow-up appointments, activity restrictions, and warning signs that require immediate attention.\n\nPATIENT CASE: [Provide patient diagnosis, hospital course, and social situation]",
+        "next": null
       }
     }
   },
@@ -47,6 +42,14 @@
       },
       "Action: Market Expansion": {
         "prompt": "Develop a step-by-step strategy for expanding market demand for an existing product. Include a SWOT analysis, identification of target expansion segments, a tailored marketing mix (4Ps), and a phased rollout plan with budget considerations and KPIs.\n\nPRODUCT/SERVICE: [Describe the product or service and its current market position]",
+        "next": null
+      },
+      "Action: Write Marketing Copy": {
+        "prompt": "Write compelling marketing copy for the specified purpose. Define the target audience, the key message, and the desired call-to-action (CTA).\n\nPURPOSE: [e.g., Website landing page, social media ad, email campaign]\nPRODUCT/SERVICE: [Describe the product/service]",
+        "next": null
+      },
+      "Action: Draft Professional Email": {
+        "prompt": "Draft a professional email for the specified situation. Ensure the tone is appropriate, the message is clear, and the objective is well-defined.\n\nSITUATION: [e.g., Networking request, follow-up after meeting, project update]\nRECIPIENT: [Describe the recipient and your relationship to them]",
         "next": null
       }
     }
@@ -61,17 +64,38 @@
         "Action: Debug Code": {
             "prompt": "Analyze the following code snippet, perform a root cause analysis of the bug, and provide a corrected version. Explain the reasoning behind the fix.\n\nCODE SNIPPET:\n```\n[Paste code here]\n```\n\nOBSERVED BEHAVIOR: [Describe what the code is doing wrong]\nEXPECTED BEHAVIOR: [Describe what the code should be doing]",
             "next": null
+        },
+        "Action: Refactor Code": {
+            "prompt": "Refactor the following code to improve its readability, efficiency, and maintainability without changing its external behavior. Explain the key improvements made.\n\nCODE TO REFACTOR:\n```\n[Paste code here]\n```\n\nREFACTORING GOALS: [e.g., Improve performance, increase readability, adhere to SOLID principles]",
+            "next": null
+        },
+        "Action: Write Unit Tests": {
+            "prompt": "Write a suite of unit tests for the following code snippet. Cover key functional cases, edge cases, and potential error conditions. Specify the testing framework to be used.\n\nCODE TO TEST:\n```\n[Paste code here]\n```\n\nTESTING FRAMEWORK: [e.g., Jest for JS, PyTest for Python]",
+            "next": null
         }
     }
   },
-  "Field: Academic/Research": {
+  "Field: Research": {
     "prompt": "You are a diligent academic and researcher. Your task is to assist with scholarly activities, ensuring a rigorous and well-structured output.\n\n",
     "next": {
-      "Action: Literature Review": {
-        "prompt": "Conduct a brief literature review on the following topic. For 3-5 key papers, provide a structured summary including: Research Question, Methodology, Key Findings, and Limitations. Conclude with a synthesis of the current research landscape and identify a specific, actionable research gap.\n\nTOPIC: [Specify research topic]",
-        "next": null
+      "Action: Write Scholarly Article": {
+        "prompt": "The specific task is to draft a scholarly article. The tone should be academic, objective, and structured according to the specified article type.\n\n",
+        "next": {
+          "Type: Review Article": {
+            "prompt": "This will be a comprehensive review article. Structure it with an Introduction, Methods (for literature search), Synthesis of Findings, Discussion of implications and gaps, and a Conclusion. Synthesize the current literature on the specified topic, highlight key findings, identify critical gaps in knowledge, and suggest directions for future research. The primary audience is fellow medical professionals and researchers.\n\nTOPIC: [Your Topic Here]",
+            "next": null
+          },
+          "Type: Case Study": {
+            "prompt": "This will be a detailed case study. Structure it with a Patient History, Clinical Findings, Timeline of Events, Diagnostic Reasoning, Treatment, Outcome, and a Discussion of the learning points. Detail the patient's presentation, diagnosis, treatment, and outcome, and discuss the clinical significance and any novel aspects of the case.\n\nCASE DETAILS: [Your Details Here]",
+            "next": null
+          },
+          "Type: Original Research Manuscript": {
+            "prompt": "Draft a manuscript for an original research study using the IMRaD structure (Introduction, Methods, Results, and Discussion). Ensure each section is complete and logically flows into the next.\n\nSTUDY DETAILS: [Provide the research question, data, and key findings]",
+            "next": null
+          }
+        }
       },
-      "Action: Grant Proposal Outline": {
+      "Action: Develop Grant Proposal": {
         "prompt": "Create a structured outline for a grant proposal. Include detailed sections for: Introduction (significance and gap), Specific Aims (SMART goals), Methodology (study design, data analysis plan), Expected Outcomes & Impact, and a Timeline with Deliverables.\n\nRESEARCH IDEA: [Briefly describe the research project]",
         "next": null
       }
