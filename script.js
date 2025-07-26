@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- DATA LOADING ---
     let promptData = {};
     let selectionPath = []; // Track user selections for navigation
+    let promptHistory = JSON.parse(localStorage.getItem('promptHistory') || '[]');
+    let favoritePrompts = JSON.parse(localStorage.getItem('favoritePrompts') || '[]');
 
     fetch('prompts.json')
         .then(response => response.json())
@@ -26,6 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const copyBtn = document.getElementById('copy-btn');
         const superPromptBtn = document.getElementById('super-prompt-btn');
         const resetBtn = document.getElementById('reset-btn');
+        const historyBtn = document.getElementById('history-btn');
+        const favoriteBtn = document.getElementById('favorite-btn');
+        const exportBtn = document.getElementById('export-btn');
 
         // --- FUNCTIONS ---
 
@@ -100,6 +105,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             promptOutput.value = fullPrompt;
             
+            // Save to history if it's a complete prompt
+            if (fullPrompt.trim() && selectionPath.length > 0) {
+                saveToHistory(fullPrompt, selectionPath);
+            }
+            
             // Update button styles and container classes in all levels
             levelContainers.forEach((container, levelIdx) => {
                 const buttons = container.querySelectorAll('button');
@@ -130,6 +140,185 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        function saveToHistory(prompt, path) {
+            const historyItem = {
+                id: Date.now(),
+                timestamp: new Date().toISOString(),
+                prompt: prompt,
+                path: path.map(p => p.key),
+                preview: prompt.substring(0, 100) + (prompt.length > 100 ? '...' : '')
+            };
+            
+            // Remove duplicate if exists
+            promptHistory = promptHistory.filter(item => item.prompt !== prompt);
+            
+            // Add to beginning
+            promptHistory.unshift(historyItem);
+            
+            // Keep only last 50 items
+            if (promptHistory.length > 50) {
+                promptHistory = promptHistory.slice(0, 50);
+            }
+            
+            localStorage.setItem('promptHistory', JSON.stringify(promptHistory));
+        }
+
+        function toggleFavorite() {
+            if (!promptOutput.value.trim()) return;
+            
+            const currentPrompt = promptOutput.value;
+            const existingIndex = favoritePrompts.findIndex(fav => fav.prompt === currentPrompt);
+            
+            if (existingIndex >= 0) {
+                // Remove from favorites
+                favoritePrompts.splice(existingIndex, 1);
+                favoriteBtn.textContent = '☆ FAVORITE';
+                favoriteBtn.style.background = 'linear-gradient(90deg, #bfc6ce 0%, #e0e5ea 100%)';
+            } else {
+                // Add to favorites
+                const favoriteItem = {
+                    id: Date.now(),
+                    timestamp: new Date().toISOString(),
+                    prompt: currentPrompt,
+                    path: selectionPath.map(p => p.key),
+                    name: `${selectionPath.map(p => p.key.replace(/^(Field|Action|Type): /, '')).join(' → ')}`,
+                    preview: currentPrompt.substring(0, 100) + (currentPrompt.length > 100 ? '...' : '')
+                };
+                favoritePrompts.unshift(favoriteItem);
+                favoriteBtn.textContent = '★ FAVORITED';
+                favoriteBtn.style.background = 'linear-gradient(90deg, #ffd700 0%, #ffed4e 100%)';
+            }
+            
+            localStorage.setItem('favoritePrompts', JSON.stringify(favoritePrompts));
+        }
+
+        function updateFavoriteButton() {
+            if (!promptOutput.value.trim()) {
+                favoriteBtn.textContent = '☆ FAVORITE';
+                favoriteBtn.style.background = 'linear-gradient(90deg, #bfc6ce 0%, #e0e5ea 100%)';
+                return;
+            }
+            
+            const isFavorited = favoritePrompts.some(fav => fav.prompt === promptOutput.value);
+            if (isFavorited) {
+                favoriteBtn.textContent = '★ FAVORITED';
+                favoriteBtn.style.background = 'linear-gradient(90deg, #ffd700 0%, #ffed4e 100%)';
+            } else {
+                favoriteBtn.textContent = '☆ FAVORITE';
+                favoriteBtn.style.background = 'linear-gradient(90deg, #bfc6ce 0%, #e0e5ea 100%)';
+            }
+        }
+
+        function showHistoryModal() {
+            const modal = createModal('Prompt History', promptHistory.map(item => ({
+                ...item,
+                title: item.path.join(' → ').replace(/Field: |Action: |Type: /g, '')
+            })), 'Load Prompt', loadHistoryItem);
+        }
+
+        function showFavoritesModal() {
+            const modal = createModal('Favorite Prompts', favoritePrompts, 'Load Favorite', loadFavoriteItem);
+        }
+
+        function createModal(title, items, actionText, actionCallback) {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>${title}</h3>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        ${items.length === 0 ? `<p class="empty-state">No ${title.toLowerCase()} yet. Start creating prompts!</p>` : 
+                        items.map(item => `
+                            <div class="history-item" data-id="${item.id}">
+                                <div class="history-item-header">
+                                    <span class="history-title">${item.title || item.name || 'Untitled'}</span>
+                                    <span class="history-date">${new Date(item.timestamp).toLocaleDateString()}</span>
+                                </div>
+                                <div class="history-preview">${item.preview}</div>
+                                <div class="history-actions">
+                                    <button class="history-load">${actionText}</button>
+                                    <button class="history-delete">Delete</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Event listeners
+            modal.querySelector('.modal-close').addEventListener('click', () => modal.remove());
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.remove();
+            });
+            
+            modal.querySelectorAll('.history-load').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const itemId = parseInt(e.target.closest('.history-item').dataset.id);
+                    actionCallback(itemId);
+                    modal.remove();
+                });
+            });
+            
+            modal.querySelectorAll('.history-delete').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const itemId = parseInt(e.target.closest('.history-item').dataset.id);
+                    deleteHistoryItem(itemId, title.includes('History'));
+                    e.target.closest('.history-item').remove();
+                });
+            });
+            
+            return modal;
+        }
+
+        function loadHistoryItem(itemId) {
+            const item = promptHistory.find(h => h.id === itemId);
+            if (item) {
+                promptOutput.value = item.prompt;
+                updateFavoriteButton();
+            }
+        }
+
+        function loadFavoriteItem(itemId) {
+            const item = favoritePrompts.find(f => f.id === itemId);
+            if (item) {
+                promptOutput.value = item.prompt;
+                updateFavoriteButton();
+            }
+        }
+
+        function deleteHistoryItem(itemId, isHistory) {
+            if (isHistory) {
+                promptHistory = promptHistory.filter(item => item.id !== itemId);
+                localStorage.setItem('promptHistory', JSON.stringify(promptHistory));
+            } else {
+                favoritePrompts = favoritePrompts.filter(item => item.id !== itemId);
+                localStorage.setItem('favoritePrompts', JSON.stringify(favoritePrompts));
+                updateFavoriteButton();
+            }
+        }
+
+        function exportPrompts() {
+            const exportData = {
+                timestamp: new Date().toISOString(),
+                history: promptHistory,
+                favorites: favoritePrompts,
+                version: '1.0'
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `prompt-builder-export-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
         /**
          * Resets the entire interface to its initial state.
          */
@@ -153,6 +342,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 2000);
             });
         });
+
+        // Watch for changes in the textarea to update favorite button
+        promptOutput.addEventListener('input', updateFavoriteButton);
+
+        favoriteBtn.addEventListener('click', toggleFavorite);
+        historyBtn.addEventListener('click', showHistoryModal);
+        exportBtn.addEventListener('click', exportPrompts);
 
         superPromptBtn.addEventListener('click', () => {
             if (!promptOutput.value) return;

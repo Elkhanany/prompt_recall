@@ -22,13 +22,27 @@
         <div class="prompt-container">
             <div class="prompt-header">
                 <h3>Generated Prompt</h3>
-                <button id="copy-btn">COPY 📋</button>
+                <div class="header-buttons">
+                    <button id="history-btn" title="View prompt history">📜 HISTORY</button>
+                    <button id="favorite-btn" title="Add to favorites">☆ FAVORITE</button>
+                    <button id="copy-btn" title="Copy to clipboard">COPY 📋</button>
+                </div>
             </div>
             <textarea id="prompt-output" placeholder="Your generated prompt will appear here..."></textarea>
             <div class="prompt-actions">
                 <button id="super-prompt-btn">SUPER-PROMPT ✨</button>
                 <button id="reset-btn">RESET 🔄</button>
+                <button id="export-btn" title="Export all data">📦 EXPORT ALL</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal for History/Favorites -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-title">History</h2>
+            <div id="modal-body"></div>
         </div>
     </div>
 
