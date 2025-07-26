@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Builder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="selection-container">
+            <h2>Build Your Prompt</h2>
+            <div id="level-1" class="selection-level">
+                </div>
+            <div id="level-2" class="selection-level">
+                </div>
+            <div id="level-3" class="selection-level">
+                </div>
+            </div>
+
+        <div class="prompt-container">
+            <div class="prompt-header">
+                <h3>Generated Prompt</h3>
+                <button id="copy-btn">COPY 📋</button>
+            </div>
+            <textarea id="prompt-output" readonly placeholder="Your generated prompt will appear here..."></textarea>
+            <div class="prompt-actions">
+                <button id="super-prompt-btn">SUPER-PROMPT ✨</button>
+                <button id="reset-btn">Reset 🔄</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
