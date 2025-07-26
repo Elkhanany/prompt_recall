@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Playfair Display', 'Crimson Text', 'Times New Roman', Georgia, serif;
     background-color: #f4f4f9;
     color: #333;
     margin: 0;
     padding: 2rem;
+    line-height: 1.7;
 }
 
 .main-container {
@@ -37,6 +40,9 @@ h2, h3 {
     color: #1a1a1a;
     border-bottom: 2px solid #e0e0e0;
     padding-bottom: 0.5rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 button {
@@ -48,6 +54,9 @@ button {
     font-size: 1rem;
     text-align: left;
     transition: background-color 0.2s, transform 0.2s;
+    font-family: 'Crimson Text', 'Times New Roman', serif;
+    font-weight: 400;
+    letter-spacing: 0.3px;
 }
 
 button:hover {
@@ -78,6 +87,8 @@ textarea#prompt-output {
     line-height: 1.6;
     background-color: #fff;
     resize: vertical;
+    font-family: 'Crimson Text', 'Times New Roman', Georgia, serif;
+    letter-spacing: 0.2px;
 }
 
 .prompt-actions {
