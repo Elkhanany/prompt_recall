@@ -245,20 +245,33 @@ textarea#prompt-output {
 
 
 #super-prompt-btn {
-    background: linear-gradient(90deg, #bfc6ce 0%, #a7b0ba 100%);
-    color: #232526;
-    border: 1px solid #a7b0ba;
-    box-shadow: 0 2px 8px rgba(180, 190, 200, 0.12);
-    text-shadow: 0 1px 2px #fff8, 0 0 1px #bfc6ce;
+    background: linear-gradient(90deg, #7dd87d 0%, #5cb85c 100%);
+    color: #1a4d1a;
+    border: 1px solid #5cb85c;
+    box-shadow: 0 2px 8px rgba(124, 216, 124, 0.15);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3), 0 0 1px #7dd87d;
 }
 
+#super-prompt-btn:hover {
+    background: linear-gradient(90deg, #8de68d 0%, #6cc46c 100%);
+    border-color: #6cc46c;
+    box-shadow: 0 4px 12px rgba(124, 216, 124, 0.25);
+    transform: translateY(-1px);
+}
 
 #reset-btn {
-    background: linear-gradient(90deg, #bfc6ce 0%, #8a929a 100%);
-    color: #232526;
-    border: 1px solid #8a929a;
-    box-shadow: 0 2px 8px rgba(180, 190, 200, 0.12);
-    text-shadow: 0 1px 2px #fff8, 0 0 1px #bfc6ce;
+    background: linear-gradient(90deg, #e67e7e 0%, #d66565 100%);
+    color: #4d1a1a;
+    border: 1px solid #d66565;
+    box-shadow: 0 2px 8px rgba(230, 126, 126, 0.15);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3), 0 0 1px #e67e7e;
+}
+
+#reset-btn:hover {
+    background: linear-gradient(90deg, #ee8e8e 0%, #e67575 100%);
+    border-color: #e67575;
+    box-shadow: 0 4px 12px rgba(230, 126, 126, 0.25);
+    transform: translateY(-1px);
 }
 
 
