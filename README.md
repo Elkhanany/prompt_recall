@@ -1,2 +1,2 @@
 # prompt_recall
-Generating simple prompts 
+Generating simple prompts here <https://elkhanany.github.io/prompt_recall/>
