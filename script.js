@@ -71,6 +71,26 @@ document.addEventListener('DOMContentLoaded', () => {
          * @param {number} levelIndex - The hierarchy level of the clicked button.
          */
         function handleSelection(key, selectedNode, levelIndex) {
+            // Check if clicking on an already selected button at this level
+            const isAlreadySelected = selectionPath.length > levelIndex && selectionPath[levelIndex].key === key;
+            
+            if (isAlreadySelected) {
+                // Clicking on selected button "reopens" this level - clear this level and beyond
+                selectionPath = selectionPath.slice(0, levelIndex);
+                
+                // Clear out all buttons in the next levels
+                for (let i = levelIndex + 1; i < levelContainers.length; i++) {
+                    levelContainers[i].innerHTML = '';
+                }
+                
+                // Re-render this level to show all options
+                const choicesForThisLevel = getChoicesForLevel(levelIndex);
+                renderChoices(choicesForThisLevel, levelContainers[levelIndex], levelIndex);
+                
+                updatePromptAndButtons();
+                return;
+            }
+            
             // If clicking a button at a level that's already been chosen, truncate the path
             if (levelIndex < selectionPath.length) {
                 // Remove selections from this level onwards
@@ -92,6 +112,27 @@ document.addEventListener('DOMContentLoaded', () => {
             if (levelIndex + 1 < levelContainers.length && selectedNode.next) {
                 renderChoices(selectedNode.next, levelContainers[levelIndex + 1], levelIndex + 1);
             }
+        }
+        
+        /**
+         * Gets the choices object for a specific level based on the current selection path
+         * @param {number} levelIndex - The level to get choices for
+         * @returns {object} The choices object for that level
+         */
+        function getChoicesForLevel(levelIndex) {
+            if (levelIndex === 0) {
+                return promptData;
+            }
+            
+            let current = promptData;
+            for (let i = 0; i < levelIndex; i++) {
+                if (selectionPath[i] && current[selectionPath[i].key] && current[selectionPath[i].key].next) {
+                    current = current[selectionPath[i].key].next;
+                } else {
+                    return null;
+                }
+            }
+            return current;
         }
         
         /**

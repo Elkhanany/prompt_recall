@@ -123,7 +123,8 @@ button.selected {
     font-family: 'Inter', sans-serif;
 }
 
-.selection-level.level-has-selection:not(:hover) button:not(.selected) {
+/* Hide all non-selected buttons when a selection has been made */
+.selection-level.level-has-selection button:not(.selected) {
     opacity: 0;
     transform: scale(0.3) translateY(-20px);
     height: 0;
@@ -138,17 +139,7 @@ button.selected {
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.selection-level.level-has-selection:hover button {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    height: auto;
-    padding: 12px 18px;
-    margin: 0 0 0.75rem 0;
-    border: 1px solid var(--border-color);
-    pointer-events: auto;
-    overflow: visible;
-}
-
+/* Always show the selected button prominently */
 .selection-level.level-has-selection button.selected {
     opacity: 1 !important;
     transform: scale(1) translateY(0) !important;
