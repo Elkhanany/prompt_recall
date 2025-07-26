@@ -157,14 +157,46 @@ document.addEventListener('DOMContentLoaded', () => {
         superPromptBtn.addEventListener('click', () => {
             if (!promptOutput.value) return;
             const currentPrompt = promptOutput.value;
-            const superPromptWrapper = `### SUPER-PROMPT INITIATED ###
-You are a panel of world-class experts collaborating on this task. Your goal is to produce a response that is comprehensive, nuanced, and forward-thinking. Critically evaluate the user's prompt, identify any underlying assumptions, and provide a multi-faceted answer that anticipates follow-up questions.
+            
+            // Extract the field from the selection path for context
+            let fieldContext = "";
+            let taskContext = "";
+            if (selectionPath.length > 0) {
+                const field = selectionPath[0].key.replace("Field: ", "");
+                fieldContext = field;
+                if (selectionPath.length > 1) {
+                    taskContext = selectionPath[1].key.replace("Action: ", "");
+                }
+            }
+            
+            const superPromptWrapper = `### EXPERT PANEL CONSULTATION INITIATED ###
 
-Here is the user's core request:
+You are convening a distinguished panel of world-class experts specifically assembled for this ${fieldContext.toLowerCase()} task. This panel operates at the highest level of professional expertise, combining deep domain knowledge with practical wisdom gained from years of real-world application.
+
+**PANEL COMPOSITION:**
+${fieldContext === "Medical" ? "- Board-certified physicians with subspecialty expertise\n- Clinical researchers with publication track records\n- Healthcare administrators with quality improvement experience\n- Patient advocates with lived experience perspectives" : ""}${fieldContext === "Business" ? "- C-suite executives with scale-up experience\n- Management consultants from top-tier firms\n- Industry veterans with market disruption experience\n- Investment professionals with portfolio expertise" : ""}${fieldContext === "Code" ? "- Senior software architects with system design expertise\n- DevOps engineers with scale and reliability experience\n- Security experts with threat modeling backgrounds\n- Product engineers with user experience focus" : ""}${fieldContext === "Research" ? "- Principal investigators with grant funding success\n- Methodological experts in quantitative and qualitative approaches\n- Peer reviewers with editorial board experience\n- Translational researchers bridging theory and application" : ""}${fieldContext === "Education" ? "- Educational psychologists with learning theory expertise\n- Curriculum designers with standards alignment experience\n- Classroom practitioners with diverse student populations\n- Assessment specialists with measurement expertise" : ""}${fieldContext === "Creative" ? "- Published authors with critical acclaim\n- Literary agents with market insight\n- Creative writing instructors with pedagogical experience\n- Editors with genre-specific expertise" : ""}${fieldContext === "" ? "- Domain experts with deep specialty knowledge\n- Practitioners with hands-on implementation experience\n- Researchers with methodological rigor\n- Strategic thinkers with systems perspective" : ""}
+
+**CONSULTATION FRAMEWORK:**
+1. **Initial Assessment:** Examine the request for underlying assumptions, scope, and complexity
+2. **Multi-perspective Analysis:** Each expert contributes domain-specific insights and identifies potential blind spots
+3. **Synthesis Integration:** Combine perspectives into a coherent, actionable response
+4. **Quality Assurance:** Cross-validate recommendations and identify implementation considerations
+5. **Future-proofing:** Anticipate follow-up questions and downstream implications
+
+**EXPERT STANDARDS:**
+- Ground all recommendations in evidence-based practices and current best standards
+- Acknowledge limitations and areas requiring additional expertise or information
+- Provide specific, actionable guidance rather than theoretical concepts
+- Consider ethical implications and potential unintended consequences
+- Maintain awareness of resource constraints and practical implementation challenges
+
+**ORIGINAL REQUEST:**
 ---
 ${currentPrompt}
 ---
-Please begin your expert-panel response.`;
+
+**PANEL DIRECTIVE:** 
+Proceed with your expert consultation, ensuring each perspective contributes meaningfully to a comprehensive, nuanced, and immediately actionable response. Begin your collaborative analysis.`;
             
             promptOutput.value = superPromptWrapper;
         });
