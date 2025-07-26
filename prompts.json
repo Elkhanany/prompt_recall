@@ -6,27 +6,75 @@
         "prompt": "The specific task is to draft an article. The tone should be professional, evidence-based, and tailored for the intended audience.\n\n",
         "next": {
           "Type: Review Article": {
-            "prompt": "This will be a comprehensive review article. Synthesize the current literature on the specified topic, highlight key findings, identify critical gaps in knowledge, and suggest directions for future research. The primary audience is fellow medical professionals and researchers.\n\nTOPIC: [Your Topic Here]",
+            "prompt": "This will be a comprehensive review article. Structure it with an Introduction, Methods (for literature search), Synthesis of Findings, Discussion of implications and gaps, and a Conclusion. Synthesize the current literature on the specified topic, highlight key findings, identify critical gaps in knowledge, and suggest directions for future research. The primary audience is fellow medical professionals and researchers.\n\nTOPIC: [Your Topic Here]",
             "next": null
           },
           "Type: Case Study": {
-            "prompt": "This will be a case study. Detail the patient's presentation, diagnosis, treatment, and outcome. Discuss the clinical significance and any novel aspects of the case.\n\nCASE DETAILS: [Your Details Here]",
+            "prompt": "This will be a detailed case study. Structure it with a Patient History, Clinical Findings, Timeline of Events, Diagnostic Reasoning, Treatment, Outcome, and a Discussion of the learning points. Detail the patient's presentation, diagnosis, treatment, and outcome, and discuss the clinical significance and any novel aspects of the case.\n\nCASE DETAILS: [Your Details Here]",
             "next": null
           }
         }
       },
       "Action: Patient Summary": {
-        "prompt": "Create a concise summary for a patient. Use clear, simple language, avoiding jargon. Explain their condition, treatment plan, and next steps.\n\nPATIENT INFO: [Your Info Here]",
+        "prompt": "Create a concise summary for a patient. Use clear, simple language, avoiding jargon. Explain their condition, treatment plan, next steps, and what symptoms to watch for.\n\nPATIENT INFO: [Your Info Here]",
         "next": null
+      },
+      "Action: Diagnosis": {
+        "prompt": "The task is to aid in clinical diagnosis. Analyze the provided information to formulate a diagnostic assessment.\n\n",
+        "next": {
+          "Type: Differential Diagnosis": {
+            "prompt": "Based on the following clinical presentation, generate a list of differential diagnoses, ordered from most to least likely. For each, provide a brief rationale and suggest key next steps (tests or questions) to narrow the list.\n\nCLINICAL PRESENTATION: [Enter patient symptoms, signs, and history here]",
+            "next": null
+          },
+          "Type: Image Description": {
+            "prompt": "Describe the provided medical image (e.g., radiograph, pathology slide, clinical photograph) in a structured report format with 'Findings' and 'Impression' sections. Identify key features and abnormalities, and suggest potential interpretations.\n\nIMAGE CONTEXT: [Describe the image and its source, or paste a link]",
+            "next": null
+          },
+          "Type: Lab Value Evaluation": {
+            "prompt": "Evaluate the following set of laboratory values, noting any trends if prior values are available. Identify any abnormalities, suggest a list of potential causes, and recommend next steps or further tests for workup.\n\nLAB VALUES: [Enter lab results here, including reference ranges if possible]",
+            "next": null
+          }
+        }
       }
     }
   },
   "Field: Business": {
     "prompt": "You are a seasoned business strategist and consultant. Provide a detailed and actionable response to the following business-related query.\n\n",
-    "next": null
+    "next": {
+      "Action: Startup Idea": {
+        "prompt": "Generate a novel startup idea for the specified industry. Outline the concept with a Problem Statement, Solution, Unique Value Proposition (UVP), Target Audience Persona, Competitive Analysis, Go-to-Market Strategy, and Key Metrics for success.\n\nINDUSTRY: [Specify industry, e.g., FinTech, Healthcare Tech]",
+        "next": null
+      },
+      "Action: Market Expansion": {
+        "prompt": "Develop a step-by-step strategy for expanding market demand for an existing product. Include a SWOT analysis, identification of target expansion segments, a tailored marketing mix (4Ps), and a phased rollout plan with budget considerations and KPIs.\n\nPRODUCT/SERVICE: [Describe the product or service and its current market position]",
+        "next": null
+      }
+    }
   },
   "Field: Code": {
     "prompt": "You are an expert programmer with experience in multiple languages and paradigms. Write clean, efficient, and well-documented code to solve the following problem.\n\n",
-    "next": null
+    "next": {
+        "Action: Generate Code": {
+            "prompt": "Write a script or function to accomplish the following task. Ensure the code is well-commented, follows idiomatic style for the language, and includes robust error handling. Specify the language and any required libraries.\n\nTASK: [Describe the coding task]\nLANGUAGE: [e.g., Python, JavaScript]",
+            "next": null
+        },
+        "Action: Debug Code": {
+            "prompt": "Analyze the following code snippet, perform a root cause analysis of the bug, and provide a corrected version. Explain the reasoning behind the fix.\n\nCODE SNIPPET:\n```\n[Paste code here]\n```\n\nOBSERVED BEHAVIOR: [Describe what the code is doing wrong]\nEXPECTED BEHAVIOR: [Describe what the code should be doing]",
+            "next": null
+        }
+    }
+  },
+  "Field: Academic/Research": {
+    "prompt": "You are a diligent academic and researcher. Your task is to assist with scholarly activities, ensuring a rigorous and well-structured output.\n\n",
+    "next": {
+      "Action: Literature Review": {
+        "prompt": "Conduct a brief literature review on the following topic. For 3-5 key papers, provide a structured summary including: Research Question, Methodology, Key Findings, and Limitations. Conclude with a synthesis of the current research landscape and identify a specific, actionable research gap.\n\nTOPIC: [Specify research topic]",
+        "next": null
+      },
+      "Action: Grant Proposal Outline": {
+        "prompt": "Create a structured outline for a grant proposal. Include detailed sections for: Introduction (significance and gap), Specific Aims (SMART goals), Methodology (study design, data analysis plan), Expected Outcomes & Impact, and a Timeline with Deliverables.\n\nRESEARCH IDEA: [Briefly describe the research project]",
+        "next": null
+      }
+    }
   }
 }
