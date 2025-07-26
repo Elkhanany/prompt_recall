@@ -100,9 +100,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             promptOutput.value = fullPrompt;
             
-            // Update button styles in all levels
+            // Update button styles and container classes in all levels
             levelContainers.forEach((container, levelIdx) => {
                 const buttons = container.querySelectorAll('button');
+                
+                // Add or remove a class to the container if a selection has been made
+                if (selectionPath.length > levelIdx) {
+                    container.classList.add('level-has-selection');
+                } else {
+                    container.classList.remove('level-has-selection');
+                }
                 
                 // Reset all buttons to default state
                 buttons.forEach(btn => {
